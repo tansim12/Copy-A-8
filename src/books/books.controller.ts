@@ -19,7 +19,7 @@ export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Post()
-  async create(
+  async createBook(
     @Req() req: Request,
     @Res() res: Response,
     @Next() next: NextFunction,
@@ -35,7 +35,7 @@ export class BooksController {
   }
 
   @Get()
-  async findAll(
+  async findAllBooks(
     @Req() req: Request,
     @Res() res: Response,
     @Next() next: NextFunction,
@@ -51,7 +51,7 @@ export class BooksController {
   }
 
   @Get(':id')
-  async findOne(
+  async findSingleBook(
     @Req() req: Request,
     @Res() res: Response,
     @Next() next: NextFunction,
@@ -67,7 +67,7 @@ export class BooksController {
   }
 
   @Put(':id')
-  async update(
+  async singleBookUpdate(
     @Req() req: Request,
     @Res() res: Response,
     @Next() next: NextFunction,
@@ -86,7 +86,7 @@ export class BooksController {
   }
 
   @Delete(':id')
-  async remove(
+  async singleBookDelete(
     @Req() req: Request,
     @Res() res: Response,
     @Next() next: NextFunction,
