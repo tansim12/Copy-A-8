@@ -35,7 +35,17 @@ export class BooksService {
     return `This action updates a #${id} book`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async deleteBookDB(id: string) {
+    await this.prisma.book.findUniqueOrThrow({
+      where: {
+        bookId: id,
+      },
+    });
+
+    await this.prisma.book.delete({
+      where: {
+        bookId: id,
+      },
+    });
   }
 }
