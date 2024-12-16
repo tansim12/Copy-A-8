@@ -13,8 +13,9 @@ export class BooksService {
     return newBook;
   }
 
-  findAll() {
-    return `This action returns all books`;
+  async findAllBooksDB() {
+    const result = await this.prisma.book.findMany();
+    return result;
   }
 
   async findSingleBookDB(bookId: string) {
@@ -24,10 +25,6 @@ export class BooksService {
       },
     });
     return result;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
   }
 
   async updateSingleBooksDB(id: string, payload: any) {

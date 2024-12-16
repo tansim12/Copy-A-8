@@ -35,8 +35,19 @@ export class BooksController {
   }
 
   @Get()
-  findAll() {
-    return this.booksService.findAll();
+  async findAll(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Next() next: NextFunction,
+  ) {
+    try {
+      const result = await this.booksService.findAllBooksDB();
+      res.send(
+        successResponse(result, HttpStatus.OK, 'Books find successfully'),
+      );
+    } catch (error) {
+      next(error);
+    }
   }
 
   @Get(':id')
