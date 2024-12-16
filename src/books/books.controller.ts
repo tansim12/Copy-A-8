@@ -2,17 +2,15 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
-  Param,
   Delete,
   Req,
   Res,
   Next,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { UpdateBookDto } from './dto/update-book.dto';
+
 import { NextFunction, Request, Response } from 'express';
 import { successResponse } from 'src/utils/successResponse';
 
@@ -57,9 +55,23 @@ export class BooksController {
     }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    return this.booksService.update(+id, updateBookDto);
+  @Put(':id')
+  async update(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Next() next: NextFunction,
+  ) {
+    try {
+      const result = await this.booksService.updateSingleBooksDB(
+        req?.params?.id,
+        req?.body,
+      );
+      res.send(
+        successResponse(result, HttpStatus.OK, 'Book updated successfully'),
+      );
+    } catch (error) {
+      next(error);
+    }
   }
 
   @Delete(':id')

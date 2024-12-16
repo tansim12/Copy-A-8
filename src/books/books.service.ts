@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -31,8 +30,24 @@ export class BooksService {
     return `This action returns a #${id} book`;
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async updateSingleBooksDB(id: string, payload: any) {
+    await this.prisma.book.findUniqueOrThrow({
+      where: {
+        bookId: id,
+      },
+    });
+
+    if (payload?.bookId) {
+      throw new HttpException("Can't change bookId", HttpStatus.BAD_REQUEST);
+    }
+
+    const result = await this.prisma.book.update({
+      where: {
+        bookId: id,
+      },
+      data: payload,
+    });
+    return result;
   }
 
   async deleteBookDB(id: string) {
